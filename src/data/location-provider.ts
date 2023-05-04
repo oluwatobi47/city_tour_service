@@ -1,4 +1,4 @@
-import { LocationDto } from '../dto/location.dto';
+import { LocationDto } from '../dto/location/location.dto';
 
 export interface LocationProvider {
   /**

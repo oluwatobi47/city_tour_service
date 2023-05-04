@@ -7,7 +7,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
   ],
   root: true,
   env: {
@@ -23,5 +23,6 @@ module.exports = {
     '@typescript-eslint/no-trailing-whitespace': 'off',
     '@typescript-eslint/no-empty': 'off',
     '@typescript-eslint/no-consecutive-blank-lines': 'off',
+    '@typescript-eslint/comma-dangle': 'off',
   },
 };
