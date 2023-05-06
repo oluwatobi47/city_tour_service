@@ -26,6 +26,16 @@ export class UtilService {
     return randomString;
   }
 
+  removeKeys<T, K extends keyof T>(obj: T, keys: K[]) {
+    const result = <Omit<T, K>>{};
+    Object.keys(obj).forEach(<K>(key) => {
+      if (!keys.includes(key)) {
+        result[key] = obj[key];
+      }
+    });
+    return result;
+  }
+
   mapModelToDTO<T, R >(model: T & Record<any, any>, dto: R): R {
     if(model['__v']) {
       delete model['__v']

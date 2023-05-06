@@ -4,9 +4,10 @@ import { LocationService } from './location.service';
 import { SharedModule } from '../../shared/shared.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Location, LocationSchema } from '../../models/location.model';
-import { City, CitySchema } from '../../models/city.model';
 import { TourGuideRequest, TourGuideRequestSchema } from '../../models/tour-guide-request.model';
 import { LocationCategory, LocationCategorySchema } from '../../models/location-category.model';
+import { SuggestedLocation, SuggestedLocationSchema } from '../../models/suggested-location.model';
+import { SuggestLocationService } from './suggest-location.service';
 
 @Module({
   imports: [
@@ -23,10 +24,14 @@ import { LocationCategory, LocationCategorySchema } from '../../models/location-
       {
         name: LocationCategory.name,
         schema: LocationCategorySchema
+      },
+      {
+        name: SuggestedLocation.name,
+        schema: SuggestedLocationSchema
       }
     ]),
   ],
   controllers: [LocationController],
-  providers: [LocationService],
+  providers: [LocationService, SuggestLocationService],
 })
 export class LocationModule {}
