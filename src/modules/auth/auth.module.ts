@@ -10,6 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     SharedModule,
+    ConfigModule,
     PassportModule.register({defaultStrategy: 'jwt'}),
     JwtModule.registerAsync({
       imports: [ConfigModule],

@@ -5,13 +5,11 @@ import { UserRegistrationDto } from '../../dto/auth/user-registration.dto';
 import { LoginDTO } from '../../dto/auth/login.dto';
 import { LoginResponseDto } from '../../dto/auth/login-response.dto';
 import { JwtService } from '@nestjs/jwt';
-
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService,
-              private jwtService: JwtService) {
-  }
+  constructor(private userService: UserService, private jwtService: JwtService, private configService: ConfigService) {}
 
   async signUp(userRegistration: UserRegistrationDto): Promise<UserDTO> {
     return this.userService.createNewUser(userRegistration);
@@ -30,8 +28,15 @@ export class AuthService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const result = this.userService.mapToDTO(user);
-    const token = this.jwtService.sign({email: result.email, id: result.id, role: result.userType})
-    return { user: result, token };
+    const token = this.jwtService.sign({ email: result.email, id: result.id, role: result.userType });
+    const expirationMs = this.configService.get<number>('JWT_EXPIRATION_MS');
+    return {
+      user: result,
+      token: {
+        token,
+        expiresAt: new Date(Date.now() + (expirationMs || 0)).getDate(),
+      },
+    };
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -42,5 +47,4 @@ export class AuthService {
     }
     return null;
   }
-
 }

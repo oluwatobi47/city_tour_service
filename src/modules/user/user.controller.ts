@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Param, Put, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Patch, Put, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from '../../filters/http-exception.filter';
 import { UserService } from './user.service';
@@ -15,13 +15,19 @@ import { JwtAuthGuard, Public } from '../../config/auth/jwt-auth.guard';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get('/profile')
+  async getUserInformation(@Res() response, @Req() request) {
+    const user = await this.userService.findUser(request.user.id);
+    return response.status(HttpStatus.OK).json(new DataResponse('Profile Updated Successfully', user));
+  }
+
   @Put('/update-profile')
-  updateUserInformation(@Res() response, @Body() userDto: UserDTO) {
-    const updatedUser = this.userService.updateUser(userDto);
+  async updateUserInformation(@Res() response, @Body() userDto: UserDTO) {
+    const updatedUser = await this.userService.updateUser(userDto);
     return response.status(HttpStatus.OK).json(new DataResponse('Profile Updated Successfully', updatedUser));
   }
 
-  @Put('/update-preference')
+  @Patch('/update-preference')
   async updateUserPreference(
     @Res() response,
     @Req() request,

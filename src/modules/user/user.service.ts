@@ -42,9 +42,16 @@ export class UserService {
     });
   }
 
+  findUser(userId: string): Promise<UserDTO> {
+    return this.userModel
+      .findById(userId)
+      .exec()
+      .then((doc) => (doc ? this.mapToDTO(doc.toObject()) : null));
+  }
+
   async updateUser(userDTO: UserDTO): Promise<UserDTO> {
     const user = await this.userModel.findById(userDTO.id).exec();
-    const updateAttributes = ['email', 'firstName', 'lastName'];
+    const updateAttributes = ['email', 'firstName', 'lastName', 'phone'];
     if (user) {
       updateAttributes.map((key) => user.set(key, userDTO[key]));
     }
@@ -110,5 +117,4 @@ export class UserService {
         return res.length ? res[0].toObject() : null;
       });
   }
-
 }

@@ -1,14 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class DataResponse<T> {
+
+  @ApiProperty()
+  valid?: boolean;
+
   @ApiProperty()
   message: string;
 
   @ApiProperty()
-  body: T;
+  data: T;
 
-  constructor(message: string, body?: T) {
+  constructor(message: string, data?: T, valid = true) {
     this.message = message;
-    this.body = body;
+    this.data = data;
+    this.valid = valid;
   }
 }
